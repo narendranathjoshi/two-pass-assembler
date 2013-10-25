@@ -1,4 +1,5 @@
 import symbol_table
+from gui import *
 
 '''
 data processing insrtuctions
@@ -20,11 +21,6 @@ control flow instructions
 opcode(4) label(12) = 16
 '''
 
-fileName = 'test.asm' #testing
+main() #load and initialize the GUI
 
-f = open(fileName, 'r')
-text = f.read()
-text = text.split('\n')
-
-#print(text)
-
+#fileName = 'test.asm' #testing
