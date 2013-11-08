@@ -1,4 +1,3 @@
-import symbol_table
 from gui import *
 
 '''
