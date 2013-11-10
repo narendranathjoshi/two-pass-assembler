@@ -3,13 +3,19 @@ from gui import *
 '''
 data processing insrtuctions
 -----------------------------
-opcode(4) imm/reg_flag(1) 00 op1(3) op2(3) op3(3) = 16
+opcode(4) op1(3) op2(3) imm/reg_flag(1) op3(3) 00 = 16
     op3() reg - 3 bit
     op3() imm - 16 bit in next word
     
 data transfer instructions
 -----------------------------
 opcode(4) op1(3) mem_loc(9) = 16
+
+mov
+-----------------------------
+opcode(4) reg(3) imm/reg_flag(1) op2(3) 0 0000 = 16
+    op2() reg - 3 bit
+    op2() imm - 16 bit in next word
 
 swi
 -----------------------------

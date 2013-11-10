@@ -28,8 +28,8 @@ class MainWIndow(Frame):
         quitButton = Button(self, text = "Quit", command = self.quit)
         quitButton.place(relx = 0.8, rely = 0.9, relwidth = 0.1)
         
-    def initGenButton(self):
-        genButton = Button(self, text = "Assemble", command = self.assemble)
+    def initAssembleButton(self):
+        genButton = Button(self, text = "Assemble", command = self.invokeAssemble)
         genButton.place(relx = 0.32, rely = 0.9, relwidth = 0.2)
         
     def initFileButton(self):
@@ -47,13 +47,17 @@ class MainWIndow(Frame):
         l1.place(relx = 0.2, rely = 0.02, relwidth = 0.3)
         l2.place(relx = 0.2, rely = 0.45, relwidth = 0.3)
                 
-    def initInfoLabel(self, textParam = "Information: "):
-        l3 = Label(self, text = textParam, background='#2ed')
+    def initInfoLabel(self, textParam = "Information: ", flag = 1):
+        if flag is 1:
+            l3 = Label(self, text = textParam, background='#2ed')
+        else:
+            l3 = Label(self, text = textParam, background='#a77')
         l3.place(relx = 0.62, rely = 0.07, relwidth = 0.32)    
         
     def initOutputText(self, textParam=''):
         self.outputText = Text(self)
         self.outputText.place(relx = 0.1, rely = 0.5, relwidth = 0.5, relheight = 0.35)
+        self.outputText.insert(index = INSERT, chars = textParam)
         
     def onOpen(self):      
         filename = filedialog.askopenfilename()
@@ -64,23 +68,39 @@ class MainWIndow(Frame):
             fileptr[0] = True
             fileptr[1] = filename
             f = open(fileptr[1], 'r')
-            text = f.read()
-            text = text.split('\n')
+            self.text = f.read()
+            self.text = self.text.split('\n')
             displayText = ''
-            for i in range(len(text)):
-                displayText += (str(i+1) + ' ' + text[i] + '\n')
+            for i in range(len(self.text)):
+                displayText += (str(i+1) + ' ' + self.text[i] + '\n')
             self.initInputText(displayText)    
-            print(displayText)                 
-            self.initGenButton()
+            #print(displayText) #testing #success                 
+            self.initAssembleButton()
             #for i in text: #testing #success
                 #print(i)       #testing
         
-    def assemble(self):
+    def invokeAssemble(self):
         #call to assembly code module
         #print("Call") #testing #success
-        someTuple = assemble() #someTuple returns the information which is passed onto initInfoLabel()
-        someString = 'read\nfrom\ntup\tle' #someTuple is processed and converted to a string
-        self.initInfoLabel(someString)
+        assembledCode, errorList, errorFlag = assemble(self.text) #someTuple returns the information which is passed onto initInfoLabel()
+        if errorFlag is False:
+            outputText = ''
+            for i in range(len(assembledCode)):
+                outputText += (str(i+1) + ' ' + assembledCode[i][0] + '\n' + assembledCode[i][1] + '\n')
+            self.initOutputText(outputText)
+            infoString = 'Success!' #someTuple is processed and converted to a string
+            self.initInfoLabel(infoString, flag=1)
+        else:
+            infoString = ''
+            for i in errorList:
+                print(i)
+                #infoString += ('Error at line: ' + i.get('lineNo') + ', Type: ' + i.get('type') + '\n')            
+            self.initInfoLabel(infoString)
+            
+            
+            
+            
+            
     
 def main():
     root = Tk()
