@@ -15,9 +15,10 @@ class MainWIndow(Frame):
         self.initInputText()
         self.initOutputText()
         self.initLabels()
+        self.initAssembleButton()
         self.initInfoLabel()
         
-    def initUI(self):
+    def initUI(self):        
         self.parent.title('Two-Pass Assembler')
         self.pack(fill=BOTH, expand=1)
         sw = self.parent.winfo_screenwidth()
@@ -40,7 +41,7 @@ class MainWIndow(Frame):
         self.inputText = Text(self)
         self.inputText.place(relx = 0.1, rely = 0.07, relwidth = 0.5, relheight = 0.35)
         self.inputText.insert(index = INSERT, chars = textParam)
-        
+                
     def initLabels(self):
         l1 = Label(self, text = "Input Assembly Source", background='#eed')
         l2 = Label(self, text = "Output Machine Code", background='#eed')        
@@ -75,32 +76,29 @@ class MainWIndow(Frame):
                 displayText += (str(i+1) + ' ' + self.text[i] + '\n')
             self.initInputText(displayText)    
             #print(displayText) #testing #success                 
-            self.initAssembleButton()
             #for i in text: #testing #success
                 #print(i)       #testing
         
     def invokeAssemble(self):
         #call to assembly code module
         #print("Call") #testing #success
-        assembledCode, errorList, errorFlag = assemble(self.text) #someTuple returns the information which is passed onto initInfoLabel()
+        lineNo, assembledCode, errorList, errorFlag = assemble(self.inputText.get( '0.0', END)) #someTuple returns the information which is passed onto initInfoLabel()
         if errorFlag is False:
             outputText = ''
+            print('assembledCode:', assembledCode)
             for i in range(len(assembledCode)):
-                outputText += (str(i+1) + ' ' + assembledCode[i][0] + '\n' + assembledCode[i][1] + '\n')
+                outputText += (str(i+1) + ' ' + assembledCode[i] + '\n')
+                
+            print('outputText:', outputText)
             self.initOutputText(outputText)
-            infoString = 'Success!' #someTuple is processed and converted to a string
+            infoString = 'Success!\n0 Errors!\nThere are\n' + str(lineNo) + ' lines in the machine code.\nMachine code size is ' + str(lineNo * 16) + 'bits.' #someTuple is processed and converted to a string
             self.initInfoLabel(infoString, flag=1)
         else:
             infoString = ''
             for i in errorList:
                 print(i)
                 #infoString += ('Error at line: ' + i.get('lineNo') + ', Type: ' + i.get('type') + '\n')            
-            self.initInfoLabel(infoString)
-            
-            
-            
-            
-            
+            self.initInfoLabel(infoString)            
     
 def main():
     root = Tk()
