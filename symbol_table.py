@@ -47,3 +47,5 @@ for i in swi_list:
     symtab_swi[i] = bit
     bit += 0b01
     #print(i, symtab_swi.get(i)) #success
+    
+symtab_labels = {}
