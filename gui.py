@@ -87,18 +87,17 @@ class MainWIndow(Frame):
             outputText = ''
             print('assembledCode:', assembledCode)
             for i in range(len(assembledCode)):
-                outputText += (str(i+1) + ' ' + assembledCode[i] + '\n')
-                
+                outputText += (str(i+1) + ' ' + assembledCode[i] + '\n')                
             print('outputText:', outputText)
             self.initOutputText(outputText)
             infoString = 'Success!\n0 Errors!\nThere are\n' + str(lineNo) + ' lines in the machine code.\nMachine code size is ' + str(lineNo * 16) + 'bits.' #someTuple is processed and converted to a string
-            self.initInfoLabel(infoString, flag=1)
+            self.initInfoLabel(infoString, flag = 1)
         else:
-            infoString = ''
+            infoString = str(len(errorList)) + ' Errors.\n'
             for i in errorList:
-                print(i)
-                #infoString += ('Error at line: ' + i.get('lineNo') + ', Type: ' + i.get('type') + '\n')            
-            self.initInfoLabel(infoString)            
+                #print(i)
+                infoString += ('Error at line: ' + str(i.get('lineNo')) + '\nType: ' + str(i.get('type')) + '\n\n')            
+            self.initInfoLabel(infoString, flag = 0)            
     
 def main():
     root = Tk()

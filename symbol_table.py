@@ -40,6 +40,8 @@ for i in reg_list:
     bit += 0b001
     #print(i, symtab_reg.get(i)) #success
     
+reg_value = 1   
+
 swi_list = ('0x00', '0x01', '0x11', '0x02')
 symtab_swi = {}
 bit = 0b00
