@@ -75,27 +75,27 @@ class MainWIndow(Frame):
             for i in range(len(self.text)):
                 displayText += (str(i+1) + ' ' + self.text[i] + '\n')
             self.initInputText(displayText)    
-            #print(displayText) #testing #success                 
+            ##print(displayText) #testing #success                 
             #for i in text: #testing #success
-                #print(i)       #testing
+                ##print(i)       #testing
         
     def invokeAssemble(self):
         #call to assembly code module
-        #print("Call") #testing #success
+        ##print("Call") #testing #success
         lineNo, assembledCode, errorList, errorFlag = assemble(self.inputText.get( '0.0', END)) #someTuple returns the information which is passed onto initInfoLabel()
         if errorFlag is False:
             outputText = ''
-            print('assembledCode:', assembledCode)
+            #print('assembledCode:', assembledCode)
             for i in range(len(assembledCode)):
                 outputText += (str(i+1) + ' ' + assembledCode[i] + '\n')                
-            print('outputText:', outputText)
+            #print('outputText:', outputText)
             self.initOutputText(outputText)
             infoString = 'Success!\n0 Errors!\nThere are\n' + str(lineNo) + ' lines in the machine code.\nMachine code size is ' + str(lineNo * 16) + 'bits.' #someTuple is processed and converted to a string
             self.initInfoLabel(infoString, flag = 1)
         else:
             infoString = str(len(errorList)) + ' Errors.\n'
             for i in errorList:
-                #print(i)
+                ##print(i)
                 infoString += ('Error at line: ' + str(i.get('lineNo')) + '\nType: ' + str(i.get('type')) + '\n\n')            
             self.initInfoLabel(infoString, flag = 0)            
     

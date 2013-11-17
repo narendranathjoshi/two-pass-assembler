@@ -7,7 +7,7 @@ def addLeadingZeroes(string, length):
     return string
 
 def assemble(text):
-    ##print("Call") #testing #success
+    ###print("Call") #testing #success
     error = {'flag':False, 'type':'', 'lineNo':1}
     errorList = []
     assembled = []
@@ -15,14 +15,14 @@ def assemble(text):
     lineNumber = 1
     orgLineNumber = 1
     text = text.split('\n')
-    ##print('text: ', text) #testing #success
+    ###print('text: ', text) #testing #success
     for i in text:
         if i is '':
             text.remove(i)
-    ##print('text2: ', text) #testing #success
+    ###print('text2: ', text) #testing #success
     if text[len(text) - 1] is '':
         text = text[:-1]
-    ##print('text3: ', text) #testing #success
+    ###print('text3: ', text) #testing #success
     
     '''
     Pass One ---
@@ -30,13 +30,13 @@ def assemble(text):
     the user-defined labels encountered.
     '''
     for line in text:
-        line1 = re.sub('\s+|,', '*', line)   #;#print('a', line)
-        line1 = re.sub('\*+', '*', line1)     #;#print('b', line)
-        lineList = line1.split('*')              #;#print('c', line) 
+        line1 = re.sub('\s+|,', '*', line)   #;##print('a', line)
+        line1 = re.sub('\*+', '*', line1)     #;##print('b', line)
+        lineList = line1.split('*')              #;##print('c', line) 
         if ':' in lineList[1]:
             symtab_labels[lineList[1]] = lineNumber
         lineNumber += 1
-    print('labels - ', symtab_labels) #testing #status
+    #print('labels - ', symtab_labels) #testing #status
             
     '''
     Pass Two ---
@@ -45,12 +45,12 @@ def assemble(text):
     '''
     lineNumber = 1
     for line in text:
-        print(lineNumber)
-        line = re.sub('\s+|,', '*', line)   #;#print('a', line)
-        line = re.sub('\*+', '*', line)     #;#print('b', line)
-        line = line.split('*')              #;#print('c', line) 
+        #print(lineNumber)
+        line = re.sub('\s+|,', '*', line)   #;##print('a', line)
+        line = re.sub('\*+', '*', line)     #;##print('b', line)
+        line = line.split('*')              #;##print('c', line) 
         line = line[1:]
-        print('line test:', line) #testing #success
+        #print('line test:', line) #testing #success
         asdLine = '' #assembled lines
         extraLine = '' #the extra line for immediate mode       
          
@@ -75,11 +75,11 @@ def assemble(text):
             continue
         else:
             asdLine += addLeadingZeroes(bin(symtab_opcode.get(line[index + 0]))[2:], 4)
-        #print('opcode:', asdLine) #testing opcode #success
+        ##print('opcode:', asdLine) #testing opcode #success
             
-        #print("Comes here 49")
+        ##print("Comes here 49")
         
-        #print('swi line:', line[0])
+        ##print('swi line:', line[0])
         if line[index + 0] == 'swi':
             
             if line[index + 1] not in symtab_swi:
@@ -88,13 +88,13 @@ def assemble(text):
                 errorList.append(error)
                 continue
             else:
-                #print("Comes here 56")
+                ##print("Comes here 56")
                 asdLine += addLeadingZeroes(bin(symtab_swi.get(line[index + 1]))[2:], 2)
-                #print('swi1:', asdLine)
+                ##print('swi1:', asdLine)
                 asdLine += '0000000000' #10 unused bits in the end
-                #print('swi2:', asdLine)
+                ##print('swi2:', asdLine)
         
-        #print("Comes here 61")
+        ##print("Comes here 61")
         if line[index + 0] == 'mov':
             if line[index + 1] not in symtab_reg:
                 errorFlag = True
@@ -109,7 +109,7 @@ def assemble(text):
                         asdLine += '0'
                     extraLine = bin(int(line[index + 2][1:]))[2:]
                     extraLine = addLeadingZeroes(extraLine, 16)
-                    #print('extraline:', extraLine)
+                    ##print('extraline:', extraLine)
                 else:
                     if line[index + 2] not in symtab_reg:
                         errorFlag = True
@@ -120,7 +120,7 @@ def assemble(text):
                         asdLine += addLeadingZeroes(bin(symtab_reg.get(line[index + 2]))[2:], 3)
                         while len(asdLine) < 16:
                             asdLine += '0'
-                #print('mov: ', asdLine)
+                ##print('mov: ', asdLine)
 
         if line[index + 0] in dpi:
             if line[index + 1] not in symtab_reg:
@@ -143,7 +143,7 @@ def assemble(text):
                             asdLine += '0'
                         extraLine = bin(int(line[index + 3][1:]))[2:]
                         extraLine = addLeadingZeroes(extraLine, 16)
-                        #print('extraline:', extraLine)
+                        ##print('extraline:', extraLine)
                     else:
                         if line[index + 3] not in symtab_reg:
                             errorFlag = True
@@ -176,7 +176,7 @@ def assemble(text):
             else:
                 asdLine += addLeadingZeroes(bin(symtab_reg.get(line[index + 1]))[2:], 3)
                 regex = re.match('\s*\[.*\]\s*', line[index + 2])
-                print('regex - ', regex, ' --- line(2) - (', line[index + 2])
+                #print('regex - ', regex, ' --- line(2) - (', line[index + 2])
                 if regex is not None:
                     if line[index + 2][1:-1] not in symtab_reg:
                         errorFlag = True
@@ -187,7 +187,7 @@ def assemble(text):
                         asdLine += addLeadingZeroes(bin(symtab_reg.get(line[index + 2][1:-1]))[2:], 3)
                         while len(asdLine) < 16:
                             asdLine += '0'
-                    #print('extraline:', extraLine)
+                    ##print('extraline:', extraLine)
                 else:
                     errorFlag = True
                     error.update(flag = True, type = 'Invalid Memory Location Specified', lineNo = orgLineNumber)
@@ -200,8 +200,8 @@ def assemble(text):
         if extraLine is not '':
             assembled.append(extraLine)
             lineNumber += 1        
-        ##print(assembled, '\n', errorList, '\n', errorFlag)
+        ###print(assembled, '\n', errorList, '\n', errorFlag)
         
     return (lineNumber - 1), assembled, errorList, errorFlag
             
-            ##print(line) #testing #success
+            ###print(line) #testing #success
